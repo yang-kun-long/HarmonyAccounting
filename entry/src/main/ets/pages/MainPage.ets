@@ -78,18 +78,9 @@ struct MainPage {
   // 返回值，返回周几，以及今年第几周
 
 
-  /**
-  // 获取一周内某一周内的数据，并按照账户类型进行分组，并计算每个分组的总金额
-  // 参数1：周数，代表是第几周
-  // 参数二：数据数组，格式为{"id":0,"accountType":0,"typeText":"snacks","amount":20,"time":"2024-09-11 10:18:19"}
-  // 返回值：data:[
-   //           {value:435, name:'foods'},
-   //           {value:310, name:'snacks'},
-   //           {value:234, name:'fuel'},
-   //           {value:135, name:'travel'},
-   //           {value:1548, name:'games'}
-   //         ]
-  **/
+
+  // 获取一个月内的数据，并按照账户类型进行分组，并计算每个分组的总金额
+
   slectMonthData(date:string,y:string,m:string): number{
     date=date.split(' ')[0];
     let year = date.split('-')[0];
@@ -139,7 +130,7 @@ struct MainPage {
           color: '#000',
           fontWeight: 'normal',
           fontFamily: 'sans-serif',
-          fontSize: 64
+          fontSize: 40
         }
       },
       tooltip: {
@@ -287,13 +278,13 @@ struct MainPage {
           color:'#000',
           fontWeight:'normal',
           fontFamily:'sans-serif',
-          fontSize:64
+          fontSize:40
         }
       },
       xAxis:{
         type:'category',
         axisLabel :{
-          fontSize:64
+          fontSize:40
         },
         data:this.getSourceString('month_list').split('-'),
 
@@ -303,7 +294,7 @@ struct MainPage {
         name:this.getSourceString('amount'),
         nameTextStyle:{
           color:'#000',
-          fontSize:64,
+          fontSize:40,
         }
       },
       // dataZoom: {
@@ -331,7 +322,7 @@ struct MainPage {
           data:monthPaydatas,
           label:{
             show:true,
-            fontSize:64,
+            fontSize:40,
           }
         }
         ,{
@@ -339,7 +330,7 @@ struct MainPage {
           data:monthIncomedatas,
           label:{
             show:true,
-            fontSize:64,
+            fontSize:10,
           }
         }
       ],
@@ -541,8 +532,10 @@ struct MainPage {
             }
             // 设置外部布局的宽度、内边距和上边距
             .width(CommonConstants.FULL_WIDTH)
+            .height('80%')
             .padding({ left: $r('app.float.edge_size_M'), right: $r('app.float.edge_size_M') })
             .margin({ top: $r('app.float.edge_size_SM') })
+
 
           }
           // 设置组件的宽度为全屏
@@ -596,102 +589,107 @@ struct MainPage {
 
       TabContent() {
         Column() {
-          Row(){
-            Row(){
-              SymbolGlyph($r('sys.symbol.arrow_left_circle'))
-                .fontColor([$r('app.color.main_color')])
-                .fontSize($r('app.float.component_size_S'))
-                .renderingStrategy(SymbolRenderingStrategy.MULTIPLE_COLOR)
-                .effectStrategy(SymbolEffectStrategy.SCALE )
-                .symbolEffect(new BounceSymbolEffect(EffectScope.LAYER, EffectDirection.UP), this.isActive)
-                .onClick(() => {
-                  this.isActive = !this.isActive;
-                  this.lastMonth();
-                })
-                .margin({ left: $r('app.float.font_size_L')
-                          ,top: $r('app.float.font_size_L')
-                })
-              Text($r('app.string.last_month'))
-                .height($r('app.float.component_size_SM'))
-                  // 设置文本组件的字体大小
-                .fontSize($r('app.float.font_size_M'))
-                  // 在文本组件的左侧添加边距
-                .margin({ top: $r('app.float.font_size_L')
-                })
-            }
-            // 设置组件的宽度为屏幕宽度
-            .width(CommonConstants.TOP_WIDTH)
-            // 设置组件内容的水平对齐方式为两端对齐
-            .justifyContent(FlexAlign.Start)
-            // 设置组件的上边距和下边距
-            .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
-            Row(){
-              Text(this.selctedYear+this.getSourceString('year')
-              +this.selctedMonth+this.getSourceString('month'))
-                .height($r('app.float.component_size_SM'))
-                // 设置文本组件的字体大小
-                .fontSize($r('app.float.font_size_M'))
-                  // 在文本组件的左侧添加边距
-                .margin({ top: $r('app.float.font_size_L')
-                })
-            }
-            .width(CommonConstants.TOP_WIDTH)
-            .justifyContent(FlexAlign.Center)
-            .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
-            Row(){
-              Text($r('app.string.next_month'))
-                .height($r('app.float.component_size_SM'))
-                  // 设置文本组件的字体大小
-                .fontSize($r('app.float.font_size_M'))
-                  // 在文本组件的左侧添加边距
-                .margin({
+          Column() {
+            Row() {
+              Row() {
+                SymbolGlyph($r('sys.symbol.arrow_left_circle'))
+                  .fontColor([$r('app.color.main_color')])
+                  .fontSize($r('app.float.component_size_S'))
+                  .renderingStrategy(SymbolRenderingStrategy.MULTIPLE_COLOR)
+                  .effectStrategy(SymbolEffectStrategy.SCALE)
+                  .symbolEffect(new BounceSymbolEffect(EffectScope.LAYER, EffectDirection.UP), this.isActive)
+                  .onClick(() => {
+                    this.isActive = !this.isActive;
+                    this.lastMonth();
+                  })
+                  .margin({
+                    left: $r('app.float.font_size_L')
+                  , top: $r('app.float.font_size_L')
+                  })
+                Text($r('app.string.last_month'))
+                  .height($r('app.float.component_size_SM'))// 设置文本组件的字体大小
+                  .fontSize($r('app.float.font_size_M'))// 在文本组件的左侧添加边距
+                  .margin({
+                    top: $r('app.float.font_size_L')
+                  })
+              }
+              // 设置组件的宽度为屏幕宽度
+              .width(CommonConstants.TOP_WIDTH)
+              // 设置组件内容的水平对齐方式为两端对齐
+              .justifyContent(FlexAlign.Start)
+              // 设置组件的上边距和下边距
+              .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
 
-                  top: $r('app.float.font_size_L')
-                })
-              SymbolGlyph($r('sys.symbol.arrow_right_circle'))
-                .fontColor([$r('app.color.main_color')])
-                .fontSize($r('app.float.component_size_S'))
-                .renderingStrategy(SymbolRenderingStrategy.MULTIPLE_COLOR)
-                .effectStrategy(SymbolEffectStrategy.SCALE )
-                .symbolEffect(new BounceSymbolEffect(EffectScope.LAYER, EffectDirection.UP), this.isActive)
-                .onClick(() => {
-                  this.isActive = !this.isActive;
-                  this.nextMonth();
-                })
-                .margin({
-                  right: $r('app.float.font_size_L'),
-                  top: $r('app.float.font_size_L')
-                })
+              Row() {
+                Text(this.selctedYear + this.getSourceString('year')
+                  + this.selctedMonth + this.getSourceString('month'))
+                  .height($r('app.float.component_size_SM'))// 设置文本组件的字体大小
+                  .fontSize($r('app.float.font_size_M'))// 在文本组件的左侧添加边距
+                  .margin({
+                    top: $r('app.float.font_size_L')
+                  })
+              }
+              .width(CommonConstants.TOP_WIDTH)
+              .justifyContent(FlexAlign.Center)
+              .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
 
+              Row() {
+                Text($r('app.string.next_month'))
+                  .height($r('app.float.component_size_SM'))// 设置文本组件的字体大小
+                  .fontSize($r('app.float.font_size_M'))// 在文本组件的左侧添加边距
+                  .margin({
+
+                    top: $r('app.float.font_size_L')
+                  })
+                SymbolGlyph($r('sys.symbol.arrow_right_circle'))
+                  .fontColor([$r('app.color.main_color')])
+                  .fontSize($r('app.float.component_size_S'))
+                  .renderingStrategy(SymbolRenderingStrategy.MULTIPLE_COLOR)
+                  .effectStrategy(SymbolEffectStrategy.SCALE)
+                  .symbolEffect(new BounceSymbolEffect(EffectScope.LAYER, EffectDirection.UP), this.isActive)
+                  .onClick(() => {
+                    this.isActive = !this.isActive;
+                    this.nextMonth();
+                  })
+                  .margin({
+                    right: $r('app.float.font_size_L'),
+                    top: $r('app.float.font_size_L')
+                  })
+
+              }
+              // 设置组件的宽度为屏幕宽度
+              .width(CommonConstants.TOP_WIDTH)
+              // 设置组件内容的水平对齐方式为两端对齐
+              .justifyContent(FlexAlign.End)
+              // 设置组件的上边距和下边距
+              .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
             }
-            // 设置组件的宽度为屏幕宽度
-            .width(CommonConstants.TOP_WIDTH)
-            // 设置组件内容的水平对齐方式为两端对齐
-            .justifyContent(FlexAlign.End)
-            // 设置组件的上边距和下边距
-            .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
           }
-          Row() {
-            if (!this.haveWeekData) {
-              Text($r('app.string.no_data'))
+
+          Column() {
+            Row() {
+              if (!this.haveWeekData) {
+                Text($r('app.string.no_data'))
+              } else {
+                McPieChart({
+                  options: this.getWeekData(this.selctedYear, this.selctedMonth)
+                })
+              }
             }
-            else {
-              McPieChart({
-                options: this.getWeekData(this.selctedYear, this.selctedMonth)
+            .height(CommonConstants.HALF_WIDTH)
+            .margin({ top: $r('app.float.edge_size_L') })
+
+            Row() {
+              McBarChart({
+                options: this.getMonthData(this.selctedYear)
               })
             }
+            .height('50%')
           }
-          .height(CommonConstants.HALF_WIDTH)
-          .margin({ top: $r('app.float.edge_size_L') })
-          Row() {
-            McBarChart({
-              options: this.getMonthData(this.selctedYear)
-            })
-          }
-          .height('50%')
-        }
-        .height(CommonConstants.FULL_HEIGHT)
+          .height('80%')
 
+        }
+        .height('100%')
       }
       .tabBar(this.tabBarBuilder(this.getSourceString('Statistics'), 1, $rawfile('ic_02_on.svg'), $rawfile('ic_02_off.svg')))
 
