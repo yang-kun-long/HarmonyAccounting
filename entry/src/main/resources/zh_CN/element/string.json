@@ -1,0 +1,152 @@
+{
+  "string": [
+    {
+      "name": "entry_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "记账本"
+    },
+    {
+      "name": "edit_text",
+      "value": "编辑"
+    },
+    {
+      "name": "pay_text",
+      "value": "支出"
+    },
+    {
+      "name": "income_text",
+      "value": "收入"
+    },
+    {
+      "name": "count_text",
+      "value": "金额"
+    },
+    {
+      "name": "input_text",
+      "value": "请输入金额"
+    },
+    {
+      "name": "confirm_text",
+      "value": "确定"
+    },
+    {
+      "name": "search",
+      "value": "搜索"
+    },
+    {
+      "name": "TOAST_TEXT_1",
+      "value": "账目类型不能为空"
+    },
+    {
+      "name": "TOAST_TEXT_2",
+      "value": "账目金额不为正整数"
+    },
+    {
+      "name": "foods",
+      "value": "吃饭"
+    },
+    {
+      "name": "snacks",
+      "value": "零食"
+    },
+    {
+      "name": "fuel",
+      "value": "汽车加油"
+    },
+    {
+      "name": "travel",
+      "value": "旅游"
+    },
+    {
+      "name": "games",
+      "value": "娱乐"
+    },
+    {
+      "name": "pets",
+      "value": "宠物"
+    },
+    {
+      "name": "income",
+      "value": "工作收入"
+    },
+    {
+      "name": "invest",
+      "value": "投资"
+    },
+    {
+      "name": "time_input",
+      "value": "请输入时间"
+    },
+    {
+      "name": "Time",
+      "value": "时间"
+    },
+    {
+      "name": "last_month",
+      "value": "上个月"
+    },
+    {
+      "name": "next_month",
+      "value": "下个月"
+    },
+    {
+      "name": "year",
+      "value": "年"
+    },
+    {
+      "name": "month",
+      "value": "月"
+    },
+    {
+      "name": "no_data",
+      "value": "本月没有数据"
+    },
+    {
+      "name": "bing_title",
+      "value": "本月支出情况"
+    },
+    {
+      "name": "bing_subtitle",
+      "value": "占比"
+    },
+    {
+      "name": "amount",
+      "value": "金额"
+    },
+    {
+      "name": "month_list",
+      "value": "一月-二月-三月-四月-五月-六月-七月-八月-九月-十月-十一月-十二月"
+    },
+    {
+      "name": "month_pay",
+      "value": "月支出"
+    },
+    {
+      "name": "month_income",
+      "value": "月收入"
+    },
+    {
+      "name": "month_title",
+      "value": "支出/收入"
+    },
+    {
+      "name": "month_subtitle",
+      "value": "概览"
+    },
+    {
+      "name": "keep_accounts",
+      "value": "记账"
+    },
+    {
+      "name": "Statistics",
+      "value": "统计"
+    }
+  ]
+}

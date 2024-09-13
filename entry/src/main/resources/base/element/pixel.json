@@ -1,0 +1,116 @@
+{
+  "float": [
+    {
+      "name": "font_size_S",
+      "value": "12vp"
+    },
+    {
+      "name": "font_size_M",
+      "value": "16vp"
+    },
+    {
+      "name": "font_size_MP",
+      "value": "20vp"
+    },
+    {
+      "name": "font_size_L",
+      "value": "24vp"
+    },
+    {
+      "name": "image_size",
+      "value": "40vp"
+    },
+    {
+      "name": "component_size_SM",
+      "value": "22vp"
+    },
+    {
+      "name": "component_size_S",
+      "value": "24vp"
+    },
+    {
+      "name": "component_size_SP",
+      "value": "33vp"
+    },
+    {
+      "name": "component_size_M",
+      "value": "40vp"
+    },
+    {
+      "name": "component_size_MP",
+      "value": "48vp"
+    },
+    {
+      "name": "component_size_LM",
+      "value": "56vp"
+    },
+    {
+      "name": "component_size_L",
+      "value": "64vp"
+    },
+    {
+      "name": "component_size_LP",
+      "value": "86vp"
+    },
+    {
+      "name": "edge_size_SM",
+      "value": "4vp"
+    },
+    {
+      "name": "edge_size_S",
+      "value": "8vp"
+    },
+    {
+      "name": "edge_size_MM",
+      "value": "11vp"
+    },
+    {
+      "name": "edge_size_M",
+      "value": "12vp"
+    },
+    {
+      "name": "edge_size_MPM",
+      "value": "15vp"
+    },
+    {
+      "name": "edge_size_MP",
+      "value": "16vp"
+    },
+    {
+      "name": "edge_size_LM",
+      "value": "17vp"
+    },
+    {
+      "name": "edge_size_L",
+      "value": "24vp"
+    },
+    {
+      "name": "edge_size_LP",
+      "value": "36vp"
+    },
+    {
+      "name": "radius_size_S",
+      "value": "16vp"
+    },
+    {
+      "name": "radius_size_M",
+      "value": "20vp"
+    },
+    {
+      "name": "radius_size_L",
+      "value": "24vp"
+    },
+    {
+      "name": "border_size_S",
+      "value": "1.5vp"
+    },
+    {
+      "name": "border_size_M",
+      "value": "2vp"
+    },
+    {
+      "name": "mark_anchor",
+      "value": "24vp"
+    }
+  ]
+}

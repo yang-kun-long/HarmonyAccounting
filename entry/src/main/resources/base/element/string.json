@@ -1,0 +1,153 @@
+{
+  "string": [
+    {
+      "name": "entry_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "Account Book"
+    },
+    {
+      "name": "edit_text",
+      "value": "Edit"
+    },
+    {
+      "name": "pay_text",
+      "value": "Pay"
+    },
+    {
+      "name": "income_text",
+      "value": "Income"
+    },
+    {
+      "name": "count_text",
+      "value": "Amount"
+    },
+    {
+      "name": "input_text",
+      "value": "Please enter the amount"
+    },
+
+    {
+      "name": "confirm_text",
+      "value": "Confirm"
+    },
+    {
+      "name": "search",
+      "value": "Search"
+    },
+    {
+      "name": "TOAST_TEXT_1",
+      "value": "The account item type cannot be empty"
+    },
+    {
+      "name": "TOAST_TEXT_2",
+      "value": "The account item amount is not a positive integer"
+    },
+    {
+      "name": "foods",
+      "value": "Foods"
+    },
+    {
+      "name": "snacks",
+      "value": "Snacks"
+    },
+    {
+      "name": "fuel",
+      "value": "Fuel"
+    },
+    {
+      "name": "travel",
+      "value": "Travel"
+    },
+    {
+      "name": "games",
+      "value": "Games"
+    },
+    {
+      "name": "pets",
+      "value": "Pets"
+    },
+    {
+      "name": "income",
+      "value": "Income"
+    },
+    {
+      "name": "invest",
+      "value": "Invest"
+    },
+    {
+      "name": "time_input",
+      "value": "Please enter the time"
+    },
+    {
+      "name": "Time",
+      "value": "time"
+    },
+    {
+      "name": "last_month",
+      "value": "LM"
+    },
+    {
+      "name": "next_month",
+      "value": "NM"
+    },
+    {
+      "name": "year",
+      "value": "year"
+    },
+    {
+      "name": "month",
+      "value": "month"
+    },
+    {
+      "name": "no_data",
+      "value": "There is no data available this month"
+    },
+    {
+      "name": "bing_title",
+      "value": "Monthly expenditure /n situation"
+    },
+    {
+      "name": "amount",
+      "value": "amount"
+    },
+    {
+      "name": "month_list",
+      "value": "January - February - March - April - May - June - July - August - September - October - November - December"
+    },
+    {
+      "name": "bing_subtitle",
+      "value": "Proportion"
+    },
+    {
+      "name": "month_pay",
+      "value": "Monthly expenditure"
+    },
+    {
+      "name": "month_income",
+      "value": "Monthly income"
+    },
+    {
+      "name": "month_title",
+      "value": "Expenditure/income"
+    },
+    {
+      "name": "month_subtitle",
+      "value": "overview"
+    },
+    {
+      "name": "keep_accounts",
+      "value": "keep accounts"
+    },
+    {
+      "name": "Statistics",
+      "value": "Statistics"
+    }
+  ]
+}

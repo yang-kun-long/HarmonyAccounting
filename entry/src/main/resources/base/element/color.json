@@ -1,0 +1,24 @@
+{
+  "color": [
+    {
+      "name": "white",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "background_color",
+      "value": "#FFF1F3F5"
+    },
+    {
+      "name": "main_color",
+      "value": "#FF007DFF"
+    },
+    {
+      "name": "pay_color",
+      "value": "#FFE84826"
+    },
+    {
+      "name": "border_color",
+      "value": "#33182431"
+    }
+  ]
+}
