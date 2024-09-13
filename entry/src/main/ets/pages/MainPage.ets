@@ -105,7 +105,7 @@ struct MainPage {
       if(item.accountType==1)
         continue;
       // 如果item.typeText不在数据weekdata中，则创建一个新对象，并设置其name和value属性
-      let weekdata = weekdatas.find((data: WeekData) => data.name == item.typeText);
+      let weekdata = weekdatas.find((data: WeekData) => data.name == this.getSourceString(item.typeText));
       if (!weekdata) {
         weekdata = {name: '', value: 0};
         weekdata.name = this.getSourceString(item.typeText);
