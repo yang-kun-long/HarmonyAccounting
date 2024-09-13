@@ -6,6 +6,10 @@
 
 ![image](screenshots/device/关系型数据库.gif)
 
+
+ohpm install @mcui/mccharts
+
+
 ### 相关概念
 
 - 关系型数据库：基于关系模型来管理数据的数据库，提供了增、删、改、查等接口，也可运行输入的SQL语句满足复杂场景需要。

@@ -4,10 +4,13 @@
   "devDependencies": {
     "@ohos/hypium": "1.0.15"
   },
-  "author": "",
-  "name": "rdb",
+  "author": "yang_kun_long",
+  "name": "Account",
   "description": "Please describe the basic information.",
   "main": "",
   "version": "1.0.0",
-  "dependencies": {}
+  "dependencies": {
+    "@mcui/mccharts": "^2.0.9"
+  },
+  "dynamicDependencies": {}
 }
