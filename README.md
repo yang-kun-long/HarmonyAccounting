@@ -307,6 +307,7 @@ function generateBucket(account: AccountData): relationalStore.ValuesBucket {
   }
 ```
 3. 点击右上角的“编辑”图标，主页面变为如图效果：
+
 ![image](screenshots/device/编辑.png)
 
 4. 可以选中需要删除的账目，点击下方“删除”图标后删除对应账目。搜索栏在键入文本并回车时，实现搜索功能。
@@ -356,7 +357,7 @@ deleteListItem() {
 ```
 
 
-4. 右下角的“添加”按钮可以打开一个自定义弹窗，并在弹窗里新建账目信息。点击账目清单中的某个账目，也可以打开自定义弹窗，并修改账目信息。自定义弹窗由使用Tabs组件创建的账目类别、使用TextInput组件创建的输入栏和确定按钮组成。
+5. 右下角的“添加”按钮可以打开一个自定义弹窗，并在弹窗里新建账目信息。点击账目清单中的某个账目，也可以打开自定义弹窗，并修改账目信息。自定义弹窗由使用Tabs组件创建的账目类别、使用TextInput组件创建的输入栏和确定按钮组成。
 ![image](screenshots/device/添加.png)
 ```typescript
 // Mainpage.ets
@@ -395,7 +396,7 @@ selectListItem(item: AccountData) {
 ```
 
 
-5. 点击时间输入框，弹出时间选择弹框，选择时间后点击确定，即可完成时间选择。不选择时间则默认为当前时间
+6. 点击时间输入框，弹出时间选择弹框，选择时间后点击确定，即可完成时间选择。不选择时间则默认为当前时间
 ![image](screenshots/device/选择时间.png)
 ```typescript
 // DialogComponent.ets
@@ -464,7 +465,7 @@ Column() {
   ...
 ```
 
-6. 点击“确定”按钮会调用accept()函数，根据isInsert的值来进行账目的添加或修改。
+7. 点击“确定”按钮会调用accept()函数，根据isInsert的值来进行账目的添加或修改。
 ```typescript
 /**
    * 处理账户的插入或更新
@@ -725,13 +726,14 @@ let defOption: Options = new Options({
   }
 })
 ```
-### 国际化
+### 五、 国际化
 1. 本应用支持多语言，使用自带的resource中的string实现中英文切换，目前支持中文和英文。
 ![image](screenshots/device/中英文.png)
 2. 系统切换英文后，程序自动转换为英文
+
 ![image](screenshots/device/英文首页.png)
 ![image](screenshots/device/英文统计.png)
-### 使用说明
+### 六、 使用说明
 
 
 1. 底部导航栏，点击“记账”图标，进入记账页面，也即应用首页。点击“统计”图标，进入统计页面。
@@ -744,12 +746,12 @@ let defOption: Options = new Options({
 8. 点击饼状图的某一类，可以查看该类账目的详细数据。
 9. 点击直方图的某一个月份，可以查看该月份账目的详细数据。
 
-### 约束与限制
+### 七、 约束与限制
 
 1. 本示例仅支持标准系统上运行，支持设备：华为手机。
 2. HarmonyOS系统：HarmonyOS NEXT Developer Beta1及以上。
 3. DevEco Studio版本：DevEco Studio NEXT Developer Beta1及以上。
 4. HarmonyOS SDK版本：HarmonyOS NEXT Developer Beta1 SDK及以上。
 
-### 项目地址
+### 八、 项目地址
 https://github.com/yang-kun-long/HarmonyAccounting
