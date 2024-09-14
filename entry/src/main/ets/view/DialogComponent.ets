@@ -64,21 +64,39 @@ export struct DialogComponent {
   // 格式化为 YYYY-MM-DD 周几
     return `${year}-${month}-${day} ${CommonConstants.WEEK_LIST[week]}`;
     }
+  /**
+   * 显示日期选择对话框
+   * 通过调用DatePickerDialog.show方法，为用户界面弹出一个日期选择器
+   * 用户可以选择或者取消选择一个日期，并且这些操作会有对应的回调函数来处理
+   */
   showDatePickerDialog() {
+    // 初始化日期选择器，并配置其属性
     DatePickerDialog.show({
+      // 设置可选日期范围的开始日期
       start: new Date('2022-1-1'),
+      // 设置可选日期范围的结束日期
       end: new Date('2050-12-31'),
+      // 设置默认选中的日期
       selected: this.selectedDate,
+      // 设置是否显示农历日期，此处设置为不显示
       lunar: false,
+      // 当用户确认选择日期时的回调函数
       onDateAccept: (value: Date) => {
+        // 当用户确认选择日期后，更新选中的日期
         this.selectedDate = value;
+        // 更新输入数据为用户选择的日期字符串
         this.inputData = this.getStringTime(value);
+        // 打印确认选择的日期信息
         console.info('DatePickerDialog:onDateAccept()', JSON.stringify(value));
       },
+      // 当用户取消选择日期时的回调函数
       onCancel: () => {
+        // 打印取消选择日期的信息
         console.info('DatePickerDialog:onCancel()');
       },
+      // 当用户更改选中日期时的回调函数
       onDateChange: (value: Date) => {
+        // 打印更改后的选中日期信息
         console.info('DatePickerDialog:onDateChange()', JSON.stringify(value));
       }
     });
@@ -264,19 +282,31 @@ export struct DialogComponent {
           .width(CommonConstants.FULL_WIDTH)
           .fontSize($r('app.float.font_size_MP'))
           .fontColor(Color.Black)
+        // 创建一个列布局
         Column() {
-          Text( this.inputData===''?this.getStringTime(this.selectedDate):this.inputData  // 输入框的默认文本
-            ).padding({
+          // 根据条件显示不同的文本内容
+          Text(
+            // 如果inputData为空，则显示格式化后的selectedDate时间，否则显示inputData的内容
+            this.inputData===''?this.getStringTime(this.selectedDate):this.inputData
+          )
+          // 为文本内容添加内边距
+          .padding({
+            // 定义内边距的左、上、下边距为CommonConstants.MINIMUM_SIZE
             left: CommonConstants.MINIMUM_SIZE,
             top: CommonConstants.MINIMUM_SIZE,
             bottom: CommonConstants.MINIMUM_SIZE
           })
-            .borderRadius(CommonConstants.MINIMUM_SIZE)
-            .backgroundColor(Color.White)
-            .onClick(() => {
-              this.showDatePickerDialog();
-            })
+          // 设置文本内容的圆角
+          .borderRadius(CommonConstants.MINIMUM_SIZE)
+          // 设置文本内容的背景颜色为白色
+          .backgroundColor(Color.White)
+          // 设置点击事件处理函数
+          .onClick(() => {
+            // 当文本被点击时，显示日期选择对话框
+            this.showDatePickerDialog();
+          })
         }
+
       }
       .width(CommonConstants.FULL_WIDTH) // 设置外层Column组件的宽度
       .padding({

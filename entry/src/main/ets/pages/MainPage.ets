@@ -1,6 +1,6 @@
 import AccountTable from '../common/database/tables/AccountTable';
 import AccountData from '../viewmodel/AccountData';
-import WeekData from  '../viewmodel/WeekData';
+import WeekData from '../viewmodel/MonthData';
 import CommonConstants from '../common/constants/CommonConstants';
 import { DialogComponent } from '../view/DialogComponent';
 import { ImageList, TextList } from '../viewmodel/AccountList';
@@ -590,63 +590,78 @@ struct MainPage {
       TabContent() {
         Column() {
           Column() {
+            // 创建一个行容器，用于包含月份切换的UI
             Row() {
+              // 创建一个行容器，用于放置返回上月的按钮和文本
               Row() {
+                // 使用图标表示返回上月的动作
                 SymbolGlyph($r('sys.symbol.arrow_left_circle'))
                   .fontColor([$r('app.color.main_color')])
                   .fontSize($r('app.float.component_size_S'))
                   .renderingStrategy(SymbolRenderingStrategy.MULTIPLE_COLOR)
                   .effectStrategy(SymbolEffectStrategy.SCALE)
+                  // 当isActive状态为真时，应用弹跳效果
                   .symbolEffect(new BounceSymbolEffect(EffectScope.LAYER, EffectDirection.UP), this.isActive)
+                  // 点击图标时切换isActive状态，并调用lastMonth方法
                   .onClick(() => {
                     this.isActive = !this.isActive;
                     this.lastMonth();
                   })
                   .margin({
-                    left: $r('app.float.font_size_L')
-                  , top: $r('app.float.font_size_L')
+                    left: $r('app.float.font_size_L'),
+                    top: $r('app.float.font_size_L')
                   })
+                // 显示“上月”文本
                 Text($r('app.string.last_month'))
-                  .height($r('app.float.component_size_SM'))// 设置文本组件的字体大小
-                  .fontSize($r('app.float.font_size_M'))// 在文本组件的左侧添加边距
+                  .height($r('app.float.component_size_SM'))
+                  .fontSize($r('app.float.font_size_M'))
                   .margin({
                     top: $r('app.float.font_size_L')
                   })
               }
               // 设置组件的宽度为屏幕宽度
               .width(CommonConstants.TOP_WIDTH)
-              // 设置组件内容的水平对齐方式为两端对齐
+              // 设置组件内容的水平对齐方式为左对齐
               .justifyContent(FlexAlign.Start)
               // 设置组件的上边距和下边距
               .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
 
+              // 创建一个行容器，用于显示当前选择的年月信息
               Row() {
+                // 显示选中的年月信息
                 Text(this.selctedYear + this.getSourceString('year')
                   + this.selctedMonth + this.getSourceString('month'))
-                  .height($r('app.float.component_size_SM'))// 设置文本组件的字体大小
-                  .fontSize($r('app.float.font_size_M'))// 在文本组件的左侧添加边距
+                  .height($r('app.float.component_size_SM'))
+                  .fontSize($r('app.float.font_size_M'))
                   .margin({
                     top: $r('app.float.font_size_L')
                   })
               }
+              // 设置组件的宽度为屏幕宽度
               .width(CommonConstants.TOP_WIDTH)
+              // 设置组件内容的水平对齐方式为居中对齐
               .justifyContent(FlexAlign.Center)
+              // 设置组件的上边距和下边距
               .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
 
+              // 创建一个行容器，用于包含下个月切换的UI
               Row() {
+                // 显示“下月”文本
                 Text($r('app.string.next_month'))
-                  .height($r('app.float.component_size_SM'))// 设置文本组件的字体大小
-                  .fontSize($r('app.float.font_size_M'))// 在文本组件的左侧添加边距
+                  .height($r('app.float.component_size_SM'))
+                  .fontSize($r('app.float.font_size_M'))
                   .margin({
-
                     top: $r('app.float.font_size_L')
                   })
+                // 使用图标表示跳转到下个月的动作
                 SymbolGlyph($r('sys.symbol.arrow_right_circle'))
                   .fontColor([$r('app.color.main_color')])
                   .fontSize($r('app.float.component_size_S'))
                   .renderingStrategy(SymbolRenderingStrategy.MULTIPLE_COLOR)
                   .effectStrategy(SymbolEffectStrategy.SCALE)
+                  // 当isActive状态为真时，应用弹跳效果
                   .symbolEffect(new BounceSymbolEffect(EffectScope.LAYER, EffectDirection.UP), this.isActive)
+                  // 点击图标时切换isActive状态，并调用nextMonth方法
                   .onClick(() => {
                     this.isActive = !this.isActive;
                     this.nextMonth();
@@ -659,11 +674,12 @@ struct MainPage {
               }
               // 设置组件的宽度为屏幕宽度
               .width(CommonConstants.TOP_WIDTH)
-              // 设置组件内容的水平对齐方式为两端对齐
+              // 设置组件内容的水平对齐方式为右对齐
               .justifyContent(FlexAlign.End)
               // 设置组件的上边距和下边距
               .margin({ top: $r('app.float.edge_size_SM'), bottom: $r('app.float.edge_size_MM') })
             }
+
           }
 
           Column() {

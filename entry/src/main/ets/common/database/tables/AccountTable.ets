@@ -1,5 +1,4 @@
 
-
 import { relationalStore } from '@kit.ArkData';
 import AccountData from '../../../viewmodel/AccountData';
 import CommonConstants from '../../constants/CommonConstants';
