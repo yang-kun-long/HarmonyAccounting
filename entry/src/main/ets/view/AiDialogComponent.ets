@@ -62,14 +62,18 @@ export struct AiDialogComponent {
         .onClick(() => {
           if (this.inputText.trim()!== '') {
             this.messages.push({
-              id: Date.now(),
-              name: '用户',
-              avatar: 'common/images/user.png',
+              id: 0,
+              name: '我',
+              avatar: '',
               content: this.inputText,
-              time: new Date().toLocaleTimeString(),
+              time: '',
               isSelf: true,
               isShowTime: false,
-              isShowAvatar: false
+              isFunctionCall: false,
+              isShowAvatar: false,
+              functionProgress: 0,
+              functionName: '',
+              functionResult: ''
             });
             // 这里可以调用网络请求实现与 AI 的交互并更新 messages
             this.inputText = '';
