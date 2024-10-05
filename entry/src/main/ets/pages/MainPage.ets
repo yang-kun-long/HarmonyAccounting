@@ -6,6 +6,7 @@ import { DialogComponent } from '../view/DialogComponent';
 import { ImageList, TextList } from '../viewmodel/AccountList';
 import Logger from '../common/utils/Logger';
 import { McBarChart,McPieChart, Options } from '@mcui/mccharts';
+import { AiDialogComponent } from '../view/AiDialogComponent';
 
 @Entry
 @Component
@@ -36,6 +37,21 @@ struct MainPage {
     // 设置对话框的对齐方式为底部对齐
     alignment: DialogAlignment.Bottom
   });
+  // 初始化 ai 对话框控制器，用于控制 ai 对话框的显示和隐藏
+  aiDialogController: CustomDialogController = new CustomDialogController({
+    // 使用DialogComponent构建对话框，传递是否为插入操作和新账户数据
+    builder: AiDialogComponent({
+      isInsert: $isInsert,
+      newAccount: $newAccount,
+      // 定义对话框确认按钮的点击事件处理函数
+      confirm: (isInsert: boolean, newAccount: AccountData) => this.accept(isInsert, newAccount)
+    }),
+    // 设置对话框的样式为自定义样式
+    customStyle: true,
+    // 设置对话框的对齐方式为底部对齐
+    alignment: DialogAlignment.Bottom
+  })
+
   /**
    * 处理账户的插入或更新
    * @param isInsert 指示是插入还是更新账户，true为插入，false为更新
@@ -74,13 +90,10 @@ struct MainPage {
       }, true);
     });
   }
+
   // 参数：字符串时间，"2024-09-11 10:18:19"
   // 返回值，返回周几，以及今年第几周
-
-
-
   // 获取一个月内的数据，并按照账户类型进行分组，并计算每个分组的总金额
-
   slectMonthData(date:string,y:string,m:string): number{
     date=date.split(' ')[0];
     let year = date.split('-')[0];
@@ -376,8 +389,6 @@ struct MainPage {
 
   @State isActive: boolean = true;
 
-
-
   // 构建用户界面的主要函数
   build() {
     // 初始化一个堆栈布局，用于组织和展示UI组件
@@ -557,6 +568,24 @@ struct MainPage {
               this.newAccount = { id: 0, accountType: 0, typeText: '', amount: 0 ,time: ''}; // 初始化新的账户对象
               this.dialogController.open(); // 打开对话框
             })
+
+
+            // 定义一个按钮，用于切换到插入状态
+            Button() {
+              Image($rawfile('ai.svg')) // 按钮显示一个加号图片
+            }
+            .width($r('app.float.component_size_MP')) // 设置按钮宽度
+            .height($r('app.float.component_size_MP')) // 设置按钮高度
+            .position({ x: CommonConstants.AI_POSITION_X, y: CommonConstants.AI_POSITION_Y }) // 设置按钮位置
+            .onClick(() => {
+
+              // 打开 ai 的对话框
+              this.aiDialogController.open()
+
+            })
+
+
+
           }
 
 

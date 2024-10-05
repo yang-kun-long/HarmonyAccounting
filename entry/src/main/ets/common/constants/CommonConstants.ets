@@ -57,6 +57,8 @@ export default class CommonConstants {
   static readonly EDIT_POSITION_Y = '90%';
   static readonly DELETE_POSITION_X = '50%';
   static readonly DELETE_POSITION_Y = '90%';
+  static readonly AI_POSITION_X = '80%';
+  static readonly AI_POSITION_Y = '80%';
 
   /**
    * 日志标签配置。
