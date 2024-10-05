@@ -111,6 +111,22 @@
     {
       "name": "mark_anchor",
       "value": "24vp"
+    },
+    {
+      "name": "button_image_width",
+      "value": "24vp"
+    },
+    {
+      "name": "button_image_height",
+      "value": "24vp"
+    },
+    {
+      "name": "button_width",
+      "value": "32vp"
+    },
+    {
+      "name": "button_height",
+      "value": "32vp"
     }
   ]
 }

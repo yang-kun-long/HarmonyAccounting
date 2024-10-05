@@ -31,7 +31,6 @@ export struct AiDialogComponent {
              */
 
 
-
             Text(message.content)
               .backgroundColor(message.content.startsWith('AI:')? '#f0f0f0' : '#e0e0e0')
               .borderRadius(10)
@@ -40,38 +39,64 @@ export struct AiDialogComponent {
         }
 
       }
+      .height('80%')
+      .border({
+        width: 1,
+        color: '#e0e0e0'
+      })
       Row() {
         TextArea({ placeholder: '输入对话...' })
           .width('70%')
           .onChange((value:string) => {
             this.inputText = value;
           });
-        Button('发送')
-          .width('20%')
-          .onClick(() => {
-            if (this.inputText.trim()!== '') {
-              this.messages.push({
-                id: Date.now(),
-                name: '用户',
-                avatar: 'common/images/user.png',
-                content: this.inputText,
-                time: new Date().toLocaleTimeString(),
-                isSelf: true,
-                isShowTime: false,
-                isShowAvatar: false
-              });
-              // 这里可以调用网络请求实现与 AI 的交互并更新 messages
-              this.inputText = '';
-            }
-          });
+        Button(){
+          Image($rawfile('send.svg'))// 设置图像的宽度
+            .width($r('app.float.button_image_width'))// 设置图像的高度
+            .height($r('app.float.button_image_height'))// 当图像被点击时，关闭当前控制器（如果存在）
+        }
+        .width($r('app.float.button_width'))
+        .height($r('app.float.button_height'))
+        .onClick(() => {
+          if (this.inputText.trim()!== '') {
+            this.messages.push({
+              id: Date.now(),
+              name: '用户',
+              avatar: 'common/images/user.png',
+              content: this.inputText,
+              time: new Date().toLocaleTimeString(),
+              isSelf: true,
+              isShowTime: false,
+              isShowAvatar: false
+            });
+            // 这里可以调用网络请求实现与 AI 的交互并更新 messages
+            this.inputText = '';
+          }
+        });
 
-        Button('清空')
-          .width('10%')
-          .onClick(() => {
-            this.messages = [];
-          });
+        Button(){
+          Image($rawfile('clear.svg'))// 设置图像的宽度
+            .width($r('app.float.button_image_width'))// 设置图像的高度
+            .height($r('app.float.button_image_height'))// 当图像被点击时，关闭当前控制器（如果存在）
+        }
+        .width($r('app.float.button_width'))
+        .height($r('app.float.button_height'))
+        .onClick(() => {
+          this.messages = [];
+        });
       }
-
+      .height($r('app.float.component_size_M'))
+      // 设置布局权重为充满整个屏幕
+      .layoutWeight(CommonConstants.FULL_SIZE)
+      // 设置底部、左边和右边的内边距为字体大小L
+      .padding({
+        bottom: $r('app.float.font_size_L'),
+        left: $r('app.float.font_size_L'),
+        right: $r('app.float.font_size_L')
+      })
+      // 设置内容对齐方式为末尾对齐
+      .justifyContent(FlexAlign.SpaceBetween)
+      .alignItems(VerticalAlign.Bottom)
 
     }
     // 设置宽度为充满整个屏幕
