@@ -1,4 +1,6 @@
 
+import Openai from '../common/utils/Openai'
+
 import CommonConstants from '../common/constants/CommonConstants';
 import ChatItem, { ChatList } from '../viewmodel/ChatItem';
 
@@ -76,6 +78,8 @@ export struct AiDialogComponent {
               functionResult: ''
             });
             // 这里可以调用网络请求实现与 AI 的交互并更新 messages
+            Openai.chat(this.inputText, this.messages)
+
             this.inputText = '';
           }
         });

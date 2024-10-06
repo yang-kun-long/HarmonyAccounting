@@ -10,7 +10,8 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "@mcui/mccharts": "^2.0.9"
+    "@mcui/mccharts": "^2.0.9",
+    "@changwei/openai": "latest"
   },
   "dynamicDependencies": {}
 }
