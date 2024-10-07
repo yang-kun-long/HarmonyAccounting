@@ -4,12 +4,18 @@ import Openai from '../common/utils/Openai'
 import CommonConstants from '../common/constants/CommonConstants';
 import ChatItem, { ChatList } from '../viewmodel/ChatItem';
 
+class AiDialogData{
+  public messages: Array<ChatItem> = [];
+  public inputText: string = '';
+}
+
+
 @CustomDialog
 export struct AiDialogComponent {
   controller?: CustomDialogController;
 
-  @State messages: Array<ChatItem> = ChatList;
-  @State inputText: string = '';
+  @State data: AiDialogData = new AiDialogData();
+
 
   // 构建方法，用于创建和配置用户界面组件
   build() {
@@ -17,7 +23,7 @@ export struct AiDialogComponent {
     Column() {
       Scroll() {
         Column(){
-          ForEach(this.messages, (message:ChatItem) => {
+          ForEach(this.data.messages, (message:ChatItem) => {
             //message.id 表示消息 id
             //message.name 表示消息发送名字
             //message.avatar 表示消息发送者头像
@@ -49,11 +55,10 @@ export struct AiDialogComponent {
         color: '#e0e0e0'
       })
       Row() {
-        TextArea({ placeholder: '输入对话...' })
+
+        TextArea({text:$$this.data.inputText, placeholder: '输入对话...' })
           .width('70%')
-          .onChange((value:string) => {
-            this.inputText = value;
-          });
+
         Button(){
           Image($rawfile('send.svg'))// 设置图像的宽度
             .width($r('app.float.button_image_width'))// 设置图像的高度
@@ -62,12 +67,23 @@ export struct AiDialogComponent {
         .width($r('app.float.button_width'))
         .height($r('app.float.button_height'))
         .onClick(() => {
-          if (this.inputText.trim()!== '') {
-            this.messages.push({
-              id: 0,
+
+
+
+          if (this.data.inputText === '') {
+            console.debug("请输入内容")
+            return;
+          }
+
+
+          if (this.data.inputText.trim()!== '') {
+
+            let length = this.data.messages.length;
+            this.data.messages.push({
+              id: length,
               name: '我',
               avatar: '',
-              content: this.inputText,
+              content: this.data.inputText,
               time: '',
               isSelf: true,
               isShowTime: false,
@@ -77,11 +93,16 @@ export struct AiDialogComponent {
               functionName: '',
               functionResult: ''
             });
-            // 这里可以调用网络请求实现与 AI 的交互并更新 messages
-            Openai.chat(this.inputText, this.messages)
 
-            this.inputText = '';
+
+            let message = this.data.messages
+            let inputText = this.data.inputText
+
+            // 这里可以调用网络请求实现与 AI 的交互并更新 messages
+            Openai.chat(message,inputText)
+
           }
+
         });
 
         Button(){
@@ -92,7 +113,7 @@ export struct AiDialogComponent {
         .width($r('app.float.button_width'))
         .height($r('app.float.button_height'))
         .onClick(() => {
-          this.messages = [];
+          this.data.messages = [];
         });
       }
       .height($r('app.float.component_size_M'))
@@ -120,6 +141,30 @@ export struct AiDialogComponent {
     // 设置对齐方式为屏幕的右下角
     .align(Alignment.BottomEnd)
   }
+
+  aboutToAppear(): void {
+
+    getContext(this).eventHub.on('messages', (messages:Array<ChatItem>) => {
+      this.updateMessages(messages);
+    });
+
+    getContext(this).eventHub.on('inputText', (inputText:string) => {
+      this.updateInputText(inputText);
+    });
+
+  }
+
+  updateMessages(messages:Array<ChatItem>) {
+    console.debug("updateMessages",messages)
+    this.data.messages = messages;
+  }
+
+  updateInputText(inputText:string) {
+    console.debug("updateInputText",inputText)
+    this.data.inputText = inputText;
+  }
+
+
 }
 
 // ai 对话气泡
