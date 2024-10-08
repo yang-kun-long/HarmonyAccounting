@@ -165,7 +165,8 @@ export class ChatCompletions {
 
         })
         .catch((error: Error) => {
-          console.info(JSON.stringify(error));
+          console.error(JSON.stringify(error));
+          console.error(error.message)
           reject(error)
         });
 

@@ -46,7 +46,9 @@ export struct AiDialogComponent {
              */
 
 
-            Text(message.content)
+            Text(message.isFunctionCall ?
+              '正在调用函数：' + message.functionName + '...' + message.functionProgress + '%' + '调用结果：' + message.functionResult
+              : message.content)
               .backgroundColor(message.content.startsWith('AI:')? '#f0f0f0' : '#e0e0e0')
               .borderRadius(10)
               .padding(10);
@@ -85,6 +87,10 @@ export struct AiDialogComponent {
 
             let content = this.data.inputText.valueOf();
 
+            // 清空输入框
+            this.data.inputText = ""
+            // 显示加载中
+            this.data.isLoading = true
 
 
             let length = this.data.messages.length;
@@ -100,80 +106,22 @@ export struct AiDialogComponent {
               isShowAvatar: false,
               functionProgress: 0,
               functionName: '',
+              functionArguments: '',
               functionResult: ''
             });
 
 
-
-
-            // message 复制 messages
-            // let messages:ChatItem[] = JSON.parse(JSON.stringify(this.data.messages));
-            let inputText = this.data.inputText
-            let messages = this.data.messages;
-
-            // // 这里可以调用网络请求实现与 AI 的交互并更新 messages
-            // Openai.chat(this.data)
-
-
-            console.debug("Openai", "chat", this.data.inputText)
-
-
             // 添加用户信息消息
-            Openai.messageList.push(new ChatCompletionUserMessageParam(this.data.inputText))
+            Openai.messageList.push(new ChatCompletionUserMessageParam(content))
 
-            // 添加一个新的聊天项到消息列表中，并发送更新后的消息列表事件
-            let messageLength = this.data.messages.length
-            this.data.messages.push({
-              id: length,
-              name: 'AI',
-              avatar: '',
-              content: "加载中...",
-              time: '',
-              isSelf: false,
-              isShowTime: false,
-              isFunctionCall: false,
-              isShowAvatar: false,
-              functionProgress: 0,
-              functionName: '',
-              functionResult: ''
-            })
+            let message:Record<string,string> = {
+              "name" : "",
+              "content" : content,
+              "role" : "user"
+            }
 
-            // 清空输入框
-            this.data.inputText = ""
-            // 显示加载中
-            this.data.isLoading = true
+            getContext(this).eventHub.emit('chat', message)
 
-
-            // 通过流式处理获取聊天完成信息
-            Openai.getCompletion((response) => {
-              let resp = response as ChatCompletion
-
-              // 清空“加载中”
-              this.data.messages[messageLength].content = ""
-
-
-              console.debug("Openai", "getCompletionByStream", JSON.stringify(resp))
-
-              this.data.messages[messageLength].content += resp.choices[0].message.content
-
-              // // 遍历响应中的每个消息块，并追加内容到消息列表的最后一个元素中
-              // for (let chunck of resp) {
-              //   if (chunck?.choices[0]?.delta?.content) {
-              //
-              //     this.data.messages[messageLength].content += chunck.choices[0].delta.content as string
-              //     console.log("消息块：",chunck.choices[0].delta.content as string)
-              //
-              //   }
-              // }
-
-              console.debug("Openai", "getCompletionByStream", this.data.messages[messageLength].content)
-
-
-              this.data.isLoading = false
-
-            })
-
-            console.debug("Openai", "chat", "end")
           }
 
         });
@@ -215,27 +163,116 @@ export struct AiDialogComponent {
     .align(Alignment.BottomEnd)
   }
 
-  onDidBuild(): void {
 
-    getContext(this).eventHub.on('messages', (messages:Array<ChatItem>) => {
-      this.data.messages = messages;
-    });
+  aboutToAppear(): void {
 
-    getContext(this).eventHub.on('inputText', (inputText:string) => {
-      this.data.inputText = inputText;
-    });
+    getContext(this).eventHub.on("chat",(message:Record<string,string|number>) => {
+
+      // 添加一个新的聊天项到消息列表中，并发送更新后的消息列表事件
+      let messageLength = this.data.messages.length
+      this.data.messages.push({
+        id: messageLength,
+        name: 'AI',
+        avatar: '',
+        content: "加载中...",
+        time: '',
+        isSelf: false,
+        isShowTime: false,
+        isFunctionCall: false,
+        isShowAvatar: false,
+        functionProgress: 0,
+        functionName: '',
+        functionArguments: '',
+        functionResult: ''
+      })
+
+
+
+
+      // 通过流式处理获取聊天完成信息
+      Openai.getCompletion((response) => {
+        let resp = response as ChatCompletion
+
+        // 清空“加载中”
+        this.data.messages[messageLength].content = ""
+
+
+        console.debug("Openai", "getCompletionByStream", JSON.stringify(resp))
+
+
+        for (let i = 0; i < resp.choices.length; i++) {
+          let choice = resp.choices[i]
+
+          Openai.addMessage(choice.message)
+
+          if (
+            (choice.finish_reason === "function_call" || choice.finish_reason === "tool_calls") &&
+              choice.message.tool_calls !== undefined &&
+              choice.message.tool_calls.length > 0
+          ) {
+
+            let functionCall = choice.message.tool_calls[0]
+
+            // 显示函数调用进度条
+            this.data.messages[messageLength].isFunctionCall = true
+            this.data.messages[messageLength].functionProgress = 0
+
+            // 显示函数调用名称
+            this.data.messages[messageLength].functionName = functionCall.function.name
+            this.data.messages[messageLength].functionArguments = functionCall.function.arguments
+
+            let toolCallId = functionCall.id
+
+
+
+            console.debug("添加新消息")
+
+            // TODO 调用具体函数
+            let res = "2020-12-30 13:58:32"
+
+            console.debug("调用函数返回：",res)
+
+
+            // 修改函数调用结果
+            this.data.messages[messageLength].functionResult = res
+
+            console.debug("修改调用结果")
+
+            // 添加工具信息消息
+            Openai.addToolMessage(res,functionCall.function.name,toolCallId)
+
+            console.debug("添加工具消息")
+
+            this.data.isLoading = false
+            this.data.isLoading = true
+
+            getContext(this).eventHub.emit('chat', {});
+
+
+          }else{
+            // 当前函数调用完成
+            // 隐藏加载中
+            this.data.isLoading = false
+          }
+
+          // 无论如何需要添加 消息
+          this.data.messages[messageLength].content += choice.message.content
+
+        }
+
+
+
+        console.log("函数调用完成返回")
+
+
+      })
+
+      console.debug("Openai", "chat", "end")
+    })
+
 
   }
 
-  updateMessages(messages:Array<ChatItem>) {
-    console.debug("updateMessages",JSON.stringify(messages))
-    this.data.messages = messages;
-  }
-
-  updateInputText(inputText:string) {
-    console.debug("updateInputText",inputText)
-    this.data.inputText = inputText;
-  }
 
 
 }

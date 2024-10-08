@@ -1,3 +1,5 @@
+import { IChatCompletionMessageParam } from './ChatCompletionMessageParam'
+
 export enum FinishReason {
   stop = "stop",
   length = "length",
@@ -36,7 +38,7 @@ export class ChatCompletionMessageToolCall {
   type: string = "function"
 }
 
-export class ChatCompletionMessage {
+export class ChatCompletionMessage implements IChatCompletionMessageParam{
   role: string = "user"
   name?: string
   content?: string | string[]
@@ -62,7 +64,8 @@ export class ChoiceLogprobs {
 }
 
 export class Choice {
-  finish_reason: string[] = ["stop", "length", "tool_calls", "content_filter", "function_call"]
+  finish_reason: string = "stop"
+  // finish_reason: string[] = ["stop", "length", "tool_calls", "content_filter", "function_call"]
   index: number = 0
   message: ChatCompletionMessage = new ChatCompletionMessage()
   logprobs?: ChoiceLogprobs

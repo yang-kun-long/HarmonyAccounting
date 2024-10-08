@@ -13,6 +13,7 @@ export default class ChatItem {
   isShowAvatar : boolean = false;
   functionProgress: number = 0; // 函数调用进度百分比
   functionName: string = ''; // 被调用的函数名称
+  functionArguments: string = '';
   functionResult: string = '';
 }
 
@@ -31,6 +32,7 @@ export const ChatList: Array<ChatItem> = [
     isFunctionCall: false,
     functionProgress: 0,
     functionName: '',
+    functionArguments: '',
     functionResult: '',
   },
   {
@@ -45,6 +47,7 @@ export const ChatList: Array<ChatItem> = [
     isFunctionCall: false,
     functionProgress: 0,
     functionName: '',
+    functionArguments: '',
     functionResult: '',
   },
   {
@@ -59,6 +62,13 @@ export const ChatList: Array<ChatItem> = [
     isFunctionCall: true,
     functionProgress: 50,
     functionName: 'addBill',
+    functionArguments: `{
+      name: '去旅游消费',
+      amount: 100.00,
+      category: '交通',
+      date: '
+      2023-05-01'
+    }`,
     functionResult: `{
       name: '去旅游消费',
       amount: 100.00,

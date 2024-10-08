@@ -1,5 +1,5 @@
 export interface IChatCompletionMessageParam {
-  content: string
+  content?: string | string[]
   role: string
   name?: string
 }
@@ -45,11 +45,12 @@ export class ChatCompletionToolMessageParam implements IChatCompletionMessagePar
   content: string
   role: string = "tool"
   name?: string
+  tool_call_id:string
 
-  constructor(content: string, name?: string) {
+  constructor(content: string, name: string,toolCallId:string) {
     this.content = content;
     this.name = name;
-
+    this.tool_call_id = toolCallId
   }
 }
 

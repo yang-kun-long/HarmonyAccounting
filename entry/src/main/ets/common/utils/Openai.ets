@@ -11,9 +11,11 @@ import { AiDialogComponent, AiDialogData } from '../../view/AiDialogComponent';
 import { HashMap } from '@kit.ArkTS';
 import { IChatCompletionPostData } from '@adrian_wang/openai/src/main/ets/AsyncCall';
 import { ChatCompletionToolParam } from '@adrian_wang/openai/src/main/ets/Function';
+import { ChatCompletionMessage } from '@adrian_wang/openai/src/main/ets/ChatCompletion';
 
 @Observed
 class Openai {
+
 
   private openaiClient: OpenAI
   public  messageList: IChatCompletionMessageParam[];
@@ -48,14 +50,17 @@ class Openai {
   }
 
   // 添加工具消息
-  addToolMessage(content:string) {
-    this.messageList.push(new ChatCompletionToolMessageParam(content))
+  addToolMessage(content:string,name:string,toolCallId:string) {
+    this.messageList.push(new ChatCompletionToolMessageParam(content,name,toolCallId))
+  }
+
+  addMessage(message: ChatCompletionMessage) {
+    this.messageList.push(message)
   }
 
   // 进行一次对话
   // 使用代理模式，否则@State 无法更新
   // async chat(messages:Array<ChatItem>,inputText:string) {
-
   chat(data:AiDialogData) {
 
     console.debug("Openai", "chat", data.inputText)
@@ -170,11 +175,15 @@ class Openai {
 
   // 获取非流式数据
   async getCompletion(chatFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
-    this.openaiClient.chat.completions.create(this.getModelParams(false))
-      .then(chatFunction)
-      .catch((error:Error) => {
-        console.log(JSON.stringify((error)));
-      })
+
+    console.debug("Openai", "getCompletion =================================")
+    console.debug("Openai", "getCompletion", JSON.stringify(this.getModelParams(false)))
+    console.debug("Openai", "getCompletion", JSON.stringify(this.messageList))
+    console.debug("Openai", "getCompletion =================================")
+
+
+    let response = await this.openaiClient.chat.completions.create(this.getModelParams(false))
+    chatFunction(response)
   }
 
 
