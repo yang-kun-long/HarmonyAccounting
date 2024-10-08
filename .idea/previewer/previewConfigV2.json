@@ -1,0 +1,11 @@
+{
+  "1.0.0": {
+    "LastPreviewDevice": {
+    }
+  },
+  "1.0.1": {
+    "profileList": [],
+    "runningProfileList": [],
+    "availableProfileList": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "license": "MIT",
+  "devDependencies": {},
+  "keywords": [
+    "openai",
+    "chat",
+    "bot",
+    "chatui"
+  ],
+  "author": "AdrianWang",
+  "name": "@adrian_wang/openai",
+  "description": "OpenAI SDK鸿蒙原生版，采用ArkTS编写，支持ChatCompletiong,Embedding等接口实现，调用方式和python SDK一致",
+  "main": "Index.ets",
+  "version": "0.0.3",
+  "dependencies": {
+    "@ohos/axios": "^2.1.1"
+  },
+  "repository": "https://gitee.com/changweizhang/openai-arkts",
+  "homepage": "https://space.bilibili.com/395257724"
+}
