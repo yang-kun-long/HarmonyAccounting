@@ -4,10 +4,13 @@ import { ChatCompletion, ChatCompletionChunk,
   ChatCompletionAssistantMessageParam,
   ChatCompletionFunctionMessageParam,
   IChatCompletionMessageParam, OpenAI,
-  ChatCompletionToolMessageParam } from '@changwei/openai'
+  ChatCompletionToolMessageParam } from '@adrian_wang/openai'
 import ChatItem from '../../viewmodel/ChatItem';
-import Logger from '../utils/Logger'
+
 import { AiDialogComponent, AiDialogData } from '../../view/AiDialogComponent';
+import { HashMap } from '@kit.ArkTS';
+import { IChatCompletionPostData } from '@adrian_wang/openai/src/main/ets/AsyncCall';
+import { ChatCompletionToolParam } from '@adrian_wang/openai/src/main/ets/Function';
 
 @Observed
 class Openai {
@@ -103,35 +106,79 @@ class Openai {
   }
 
 
-  // 获取非流式数据
-  async getCompletion(streamFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
-    this.openaiClient.chat.completions.create(
-      {
-        messages: this.messageList,
-        model: "gpt-4o-mini",
-        stream: false
-      }
-    )
+
+
+  // 获取流式数据并进行处理
+  async getCompletionByStream(streamFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
+    this.openaiClient.chat.completions.create(this.getModelParams(true))
     .then(streamFunction)
     .catch((error:Error) => {
       console.log(JSON.stringify((error)));
     })
   }
 
-  // 获取流式数据并进行处理
-  async getCompletionByStream(streamFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
-    this.openaiClient.chat.completions.create(
-      {
-        messages: this.messageList,
-        model: "gpt-4o-mini",
-        stream: true
-      }
-    )
-    .then(streamFunction)
-    .catch((error:Error) => {
-      console.log(JSON.stringify((error)));
+
+
+  // 获取初始化的模型参数，用于构造请求
+  getModelParams(isStream:boolean): IChatCompletionPostData {
+
+    let tools: ChatCompletionToolParam[] = []
+
+
+
+    let parameters: Map<string, object>;
+
+
+
+    /*TODO*******************************************************************
+     *                     这里添加函数清单                                    *
+     *TODO*******************************************************************/
+    parameters = new Map<string, object>();
+    let time_format = new Map<string, object>();
+
+    time_format["type"] = "string"
+    time_format["description"] = "The format of the time"
+
+    parameters["type"] = "object"
+    parameters["properties"] = {
+      "time_format": time_format
+    }
+
+    /***********************************************************************/
+
+
+
+
+    tools.push({
+      function:{
+        name: "get_current_time",
+        description: "Get the current time",
+        parameters:parameters
+      },
+      type: "function"
     })
+
+
+    return {
+      messages: this.messageList,
+      model: "gpt-4o-mini",
+      stream: isStream,
+      tools: tools
+    }
   }
+
+
+  // 获取非流式数据
+  async getCompletion(chatFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
+    this.openaiClient.chat.completions.create(this.getModelParams(false))
+      .then(chatFunction)
+      .catch((error:Error) => {
+        console.log(JSON.stringify((error)));
+      })
+  }
+
+
+
 
 }
 

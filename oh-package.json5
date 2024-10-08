@@ -11,7 +11,8 @@
   "version": "1.0.0",
   "dependencies": {
     "@mcui/mccharts": "^2.0.9",
-    "@changwei/openai": "latest"
+    "@changwei/openai": "latest",
+    "@adrian_wang/openai": "file:./library"
   },
   "dynamicDependencies": {}
 }

@@ -8,6 +8,12 @@
       <excludeFolder url="file://$MODULE_DIR$/../../entry/build" />
       <excludeFolder url="file://$MODULE_DIR$/../../entry/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/../../entry/oh_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/../../library/.cxx" />
+      <excludeFolder url="file://$MODULE_DIR$/../../library/.preview" />
+      <excludeFolder url="file://$MODULE_DIR$/../../library/.test" />
+      <excludeFolder url="file://$MODULE_DIR$/../../library/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../library/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/../../library/oh_modules" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" exported="" scope="PROVIDED">

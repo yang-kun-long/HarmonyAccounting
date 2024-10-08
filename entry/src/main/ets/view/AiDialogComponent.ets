@@ -3,7 +3,7 @@ import Openai from '../common/utils/Openai'
 
 import CommonConstants from '../common/constants/CommonConstants';
 import ChatItem, { ChatList } from '../viewmodel/ChatItem';
-import { ChatCompletionChunk, ChatCompletionUserMessageParam } from '@changwei/openai';
+import { ChatCompletion, ChatCompletionChunk, ChatCompletionUserMessageParam } from '@adrian_wang/openai';
 
 @Observed
 export class AiDialogData{
@@ -145,22 +145,26 @@ export struct AiDialogComponent {
 
 
             // 通过流式处理获取聊天完成信息
-            Openai.getCompletionByStream((response) => {
-              let resp = response as ChatCompletionChunk[]
+            Openai.getCompletion((response) => {
+              let resp = response as ChatCompletion
 
               // 清空“加载中”
               this.data.messages[messageLength].content = ""
 
 
-              // 遍历响应中的每个消息块，并追加内容到消息列表的最后一个元素中
-              for (let chunck of resp) {
-                if (chunck?.choices[0]?.delta?.content) {
+              console.debug("Openai", "getCompletionByStream", JSON.stringify(resp))
 
-                  this.data.messages[messageLength].content += chunck.choices[0].delta.content as string
-                  console.log("消息块：",chunck.choices[0].delta.content as string)
+              this.data.messages[messageLength].content += resp.choices[0].message.content
 
-                }
-              }
+              // // 遍历响应中的每个消息块，并追加内容到消息列表的最后一个元素中
+              // for (let chunck of resp) {
+              //   if (chunck?.choices[0]?.delta?.content) {
+              //
+              //     this.data.messages[messageLength].content += chunck.choices[0].delta.content as string
+              //     console.log("消息块：",chunck.choices[0].delta.content as string)
+              //
+              //   }
+              // }
 
               console.debug("Openai", "getCompletionByStream", this.data.messages[messageLength].content)
 
