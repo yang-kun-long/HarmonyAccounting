@@ -6,7 +6,7 @@ import { DialogComponent } from '../view/DialogComponent';
 import { ImageList, TextList } from '../viewmodel/AccountList';
 import Logger from '../common/utils/Logger';
 import { McBarChart,McPieChart, Options } from '@mcui/mccharts';
-import { AiDialogComponent } from '../view/AiDialogComponent';
+import { AiDialogComponent, AiDialogData } from '../view/AiDialogComponent';
 
 @Entry
 @Component

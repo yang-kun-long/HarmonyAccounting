@@ -3,10 +3,15 @@ import Openai from '../common/utils/Openai'
 
 import CommonConstants from '../common/constants/CommonConstants';
 import ChatItem, { ChatList } from '../viewmodel/ChatItem';
+import { ChatCompletionChunk, ChatCompletionUserMessageParam } from '@changwei/openai';
 
-class AiDialogData{
+@Observed
+export class AiDialogData{
+
+
   public messages: Array<ChatItem> = [];
   public inputText: string = '';
+  public isLoading: boolean = false;
 }
 
 
@@ -45,7 +50,7 @@ export struct AiDialogComponent {
               .backgroundColor(message.content.startsWith('AI:')? '#f0f0f0' : '#e0e0e0')
               .borderRadius(10)
               .padding(10);
-          }, (item:ChatItem) => String(item.id));
+          }, (item:ChatItem) => JSON.stringify(item));
         }
 
       }
@@ -57,6 +62,7 @@ export struct AiDialogComponent {
       Row() {
 
         TextArea({text:$$this.data.inputText, placeholder: '输入对话...' })
+          .focusable(!this.data.isLoading)
           .width('70%')
 
         Button(){
@@ -68,8 +74,6 @@ export struct AiDialogComponent {
         .height($r('app.float.button_height'))
         .onClick(() => {
 
-
-
           if (this.data.inputText === '') {
             console.debug("请输入内容")
             return;
@@ -78,12 +82,17 @@ export struct AiDialogComponent {
 
           if (this.data.inputText.trim()!== '') {
 
+
+            let content = this.data.inputText.valueOf();
+
+
+
             let length = this.data.messages.length;
             this.data.messages.push({
               id: length,
               name: '我',
               avatar: '',
-              content: this.data.inputText,
+              content: content,
               time: '',
               isSelf: true,
               isShowTime: false,
@@ -95,12 +104,72 @@ export struct AiDialogComponent {
             });
 
 
-            let message = this.data.messages
+
+
+            // message 复制 messages
+            // let messages:ChatItem[] = JSON.parse(JSON.stringify(this.data.messages));
             let inputText = this.data.inputText
+            let messages = this.data.messages;
 
-            // 这里可以调用网络请求实现与 AI 的交互并更新 messages
-            Openai.chat(message,inputText)
+            // // 这里可以调用网络请求实现与 AI 的交互并更新 messages
+            // Openai.chat(this.data)
 
+
+            console.debug("Openai", "chat", this.data.inputText)
+
+
+            // 添加用户信息消息
+            Openai.messageList.push(new ChatCompletionUserMessageParam(this.data.inputText))
+
+            // 添加一个新的聊天项到消息列表中，并发送更新后的消息列表事件
+            let messageLength = this.data.messages.length
+            this.data.messages.push({
+              id: length,
+              name: 'AI',
+              avatar: '',
+              content: "加载中...",
+              time: '',
+              isSelf: false,
+              isShowTime: false,
+              isFunctionCall: false,
+              isShowAvatar: false,
+              functionProgress: 0,
+              functionName: '',
+              functionResult: ''
+            })
+
+            // 清空输入框
+            this.data.inputText = ""
+            // 显示加载中
+            this.data.isLoading = true
+
+
+            // 通过流式处理获取聊天完成信息
+            Openai.getCompletionByStream((response) => {
+              let resp = response as ChatCompletionChunk[]
+
+              // 清空“加载中”
+              this.data.messages[messageLength].content = ""
+
+
+              // 遍历响应中的每个消息块，并追加内容到消息列表的最后一个元素中
+              for (let chunck of resp) {
+                if (chunck?.choices[0]?.delta?.content) {
+
+                  this.data.messages[messageLength].content += chunck.choices[0].delta.content as string
+                  console.log("消息块：",chunck.choices[0].delta.content as string)
+
+                }
+              }
+
+              console.debug("Openai", "getCompletionByStream", this.data.messages[messageLength].content)
+
+
+              this.data.isLoading = false
+
+            })
+
+            console.debug("Openai", "chat", "end")
           }
 
         });
@@ -142,20 +211,20 @@ export struct AiDialogComponent {
     .align(Alignment.BottomEnd)
   }
 
-  aboutToAppear(): void {
+  onDidBuild(): void {
 
     getContext(this).eventHub.on('messages', (messages:Array<ChatItem>) => {
-      this.updateMessages(messages);
+      this.data.messages = messages;
     });
 
     getContext(this).eventHub.on('inputText', (inputText:string) => {
-      this.updateInputText(inputText);
+      this.data.inputText = inputText;
     });
 
   }
 
   updateMessages(messages:Array<ChatItem>) {
-    console.debug("updateMessages",messages)
+    console.debug("updateMessages",JSON.stringify(messages))
     this.data.messages = messages;
   }
 

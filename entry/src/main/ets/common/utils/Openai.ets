@@ -7,13 +7,13 @@ import { ChatCompletion, ChatCompletionChunk,
   ChatCompletionToolMessageParam } from '@changwei/openai'
 import ChatItem from '../../viewmodel/ChatItem';
 import Logger from '../utils/Logger'
-import { AiDialogComponent } from '../../view/AiDialogComponent';
+import { AiDialogComponent, AiDialogData } from '../../view/AiDialogComponent';
 
 @Observed
 class Openai {
 
   private openaiClient: OpenAI
-  private messageList: IChatCompletionMessageParam[];
+  public  messageList: IChatCompletionMessageParam[];
 
   constructor() {
     this.openaiClient = new OpenAI(
@@ -51,52 +51,60 @@ class Openai {
 
   // 进行一次对话
   // 使用代理模式，否则@State 无法更新
-  chat(messages:Array<ChatItem>,inputText:string) {
+  // async chat(messages:Array<ChatItem>,inputText:string) {
 
+  chat(data:AiDialogData) {
 
-    console.debug("Openai", "chat", inputText)
+    console.debug("Openai", "chat", data.inputText)
 
 
     // 添加用户信息消息
-    this.messageList.push(new ChatCompletionUserMessageParam(inputText))
+    this.messageList.push(new ChatCompletionUserMessageParam(data.inputText))
 
-    let messageLength = messages.length
-    messages.push(new ChatItem())
-    messages[messageLength-1].id = messageLength
-    messages[messageLength-1].content = ""
-    getContext(this).eventHub.emit('messages', messages);
-    console.debug("Openai", "chat", JSON.stringify(messages))
+    // 添加一个新的聊天项到消息列表中，并发送更新后的消息列表事件
+    let messageLength = data.messages.length
+    data.messages.push(new ChatItem())
+    data.messages[messageLength-1].id = messageLength
+    data.messages[messageLength-1].content = ""
+    getContext(this).eventHub.emit('messages', data.messages);
+    console.debug("Openai", "chat", JSON.stringify(data.messages))
     console.debug("Openai", "chat", JSON.stringify(this.messageList))
 
-    // 获取聊天信息
+
+    data.inputText = ""
+
+    // 通过流式处理获取聊天完成信息
     this.getCompletionByStream((response) => {
       console.log(JSON.stringify((response)));
       let resp = response as ChatCompletionChunk[]
 
+      // 遍历响应中的每个消息块，并追加内容到消息列表的最后一个元素中
       for (let chunck of resp) {
         if (chunck?.choices[0]?.delta?.content) {
 
-          messages[messageLength-1].content += chunck.choices[0].delta.content as string
-          getContext(this).eventHub.emit('messages', messages);
+          data.messages[messageLength-1].content += chunck.choices[0].delta.content as string
+          console.log("消息块：",chunck.choices[0].delta.content as string)
 
-
-          console.log("更新消息中：",JSON.stringify(messages[messageLength-1]))
         }
       }
 
-      console.debug("Openai", "getCompletionByStream", messages[messageLength-1].content)
+      console.debug("Openai", "getCompletionByStream", data.messages[messageLength-1].content)
 
-      inputText = ""
 
-      // getContext(this).eventHub.emit('messages', messages);
-      getContext(this).eventHub.emit('inputText', inputText);
+
+      data.inputText = ""
+      getContext(this).eventHub.emit('inputText', data.inputText);
+      getContext(this).eventHub.emit('messages', data.messages);
 
     })
+
+    console.debug("Openai", "chat", "end")
+
   }
 
 
   // 获取非流式数据
-  getCompletion(streamFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
+  async getCompletion(streamFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
     this.openaiClient.chat.completions.create(
       {
         messages: this.messageList,
@@ -111,7 +119,7 @@ class Openai {
   }
 
   // 获取流式数据并进行处理
-  getCompletionByStream(streamFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
+  async getCompletionByStream(streamFunction:(res:ChatCompletion | ChatCompletionChunk[])=>void) {
     this.openaiClient.chat.completions.create(
       {
         messages: this.messageList,

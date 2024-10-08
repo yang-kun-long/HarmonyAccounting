@@ -1,5 +1,6 @@
 
 // 对话元素的单个显示数据
+@Observed
 export default class ChatItem {
   id: number = -1; // 消息唯一标识符
   name: string = ''; // 发送者名称
